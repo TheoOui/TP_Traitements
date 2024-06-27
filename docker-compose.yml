@@ -33,7 +33,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - db-data
+      - db-data:/var/lib/mysql
 
   redis:
     image: redis:latest
