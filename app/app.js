@@ -23,9 +23,6 @@ const connection = mysql.createConnection(db_config);
 // Configuration etcd
 const etcd = new Etcd3({ hosts: `nginx:2379` });
 
-// Configuration Redis
-const redisClient = Redis.createClient({ host: `${redis_host}`, port: 6379 });
-
 app.post('/reserve', async (req, res) => {
   const { event_id, user_id } = req.body;
 
