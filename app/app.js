@@ -1,7 +1,6 @@
 const express = require('express');
 const mysql = require('mysql');
 const { Etcd3 } = require('etcd3');
-const Redis = require('redis');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
 
