@@ -14,13 +14,17 @@ const db_config = {
   database: 'ticketdb'
 };
 
+// env var
+const etcd_host = process.env.ETCD_HOST || 'localhost';
+const redis_host = process.env.REDIS_HOST || 'localhost';
+
 const connection = mysql.createConnection(db_config);
 
 // Configuration etcd
-const etcd = new Etcd3({ hosts: 'http://etcd:2379' });
+const etcd = new Etcd3({ hosts: `nginx:2379` });
 
 // Configuration Redis
-const redisClient = Redis.createClient({ host: 'redis', port: 6379 });
+const redisClient = Redis.createClient({ host: `${redis_host}`, port: 6379 });
 
 app.post('/reserve', async (req, res) => {
   const { event_id, user_id } = req.body;
