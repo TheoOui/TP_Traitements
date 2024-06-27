@@ -2,6 +2,8 @@ const express = require('express');
 const mysql = require('mysql');
 const { Etcd3 } = require('etcd3');
 const Redis = require('redis');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 
 const app = express();
 app.use(express.json());
@@ -26,6 +28,31 @@ const etcd = new Etcd3({ hosts: `nginx:2379` });
 // Configuration Redis
 const redisClient = Redis.createClient({ host: `${redis_host}`, port: 6379 });
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+/**
+ * @swagger
+ * /reserve:
+ *   post:
+ *     summary: Post a reservation.
+ *     description: Try to set a ticket reservation.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               event_id:
+ *                 type: integer
+ *                 example: 1
+ *               user_id:
+ *                 type: integer
+ *                 example: 123
+ *     responses:
+ *       200:
+ *         description: Successful response with a list of users.
+ */
 app.post('/reserve', async (req, res) => {
   const { event_id, user_id } = req.body;
 

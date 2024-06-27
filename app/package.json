@@ -4,13 +4,14 @@
     "description": "Distributed ticket reservation system",
     "main": "app.js",
     "scripts": {
-      "start": "node app.js"
+        "start": "node app.js"
     },
     "dependencies": {
-      "express": "^4.17.1",
-      "mysql": "^2.18.1",
-      "etcd3": "^1.1.0",
-      "redis": "^3.1.2"
+        "etcd3": "^1.1.0",
+        "express": "^4.19.2",
+        "mysql": "^2.18.1",
+        "redis": "^3.1.2",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.1"
     }
-  }
-  
+}
