@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  etcd:
+    image: gcr.io/etcd-development/etcd:v3.3.15-arm64
+    environment:
+      ETCD_NAME: etcd0
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: http://etcd:2380
+      ETCD_INITIAL_CLUSTER: etcd0=http://etcd:2380
+      ETCD_ADVERTISE_CLIENT_URLS: http://etcd:2379
+      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+
+  mysql:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ticketdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  app:
+    build: ./app
+    ports:
+      - "5001:5000"  
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DB: ticketdb
+      ETCD_HOST: etcd
+      REDIS_HOST: redis
+    depends_on:
+      - mysql
+      - etcd
+      - redis
+
+volumes:
+  db-data:
